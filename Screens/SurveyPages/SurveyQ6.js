@@ -4,11 +4,10 @@ import React from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
-const SurveyQ6 = ({navigation}) =>{
+const SurveyQ6 = ({navigation, route}) =>{
   const [categories, setCategories] = React.useState([]);
-  <View>
-    <Text>Hello World</Text>
-  </View>
+  let {the_data} = route.params;
+  the_data.push(categories);
   return(
     <View style={styles.container}>
       <Text style={styles.textQ1}>
@@ -28,19 +27,19 @@ const SurveyQ6 = ({navigation}) =>{
            <Button
               title="Next"
               color="black"
-              onPress={() => navigation.navigate('Main')}
+              onPress={() => navigation.navigate('Hub', {the_data: the_data})}
             />
       </View>
       <View style={{marginTop:50}}>
-        <Text>Selected Categories : </Text>
+        <Text style={{color:'white'}}>Selected Categories : </Text>
         {
           categories.map((item) => {
             return(
-              <Text key={item} style={{marginTop:10,color:'gray'}}>{item}</Text>
+              <Text key={item} style={{marginTop:10,color:'white'}}>{item}</Text>
             )
           })
         }
-        
+      <Text style={{marginTop:10,color:'white'}}>{the_data}</Text>
       </View>
     </View>
   );

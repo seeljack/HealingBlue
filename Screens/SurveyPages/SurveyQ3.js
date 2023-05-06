@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, Image, Button, TextInput} from 'react-native';
 import React from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'
 
-const SurveyQ3 = ({navigation}) =>{
+const SurveyQ3 = ({navigation, route}) =>{
   const [selected, setSelected] = React.useState("");
+  let {the_data} = route.params;
+  the_data.push(selected);
   <View>
     <Text>Hello World</Text>
   </View>
@@ -26,12 +28,13 @@ const SurveyQ3 = ({navigation}) =>{
            <Button
               title="Next"
               color="black"
-              onPress={() => navigation.navigate('SurveyQ4')}
+              onPress={() => navigation.navigate('SurveyQ4',{the_data: the_data})}
             />
       </View>
       <View style={{marginTop:50}}>
-        <Text>Selected Value : </Text>
-        <Text style={{marginTop:10,color:'gray'}}>{selected}</Text>
+        <Text style={{color:'white'}}>Selected Value :</Text>
+        <Text style={{marginTop:10,color:'white'}}>{selected}</Text>
+        <Text style={{marginTop:10,color:'white'}}>{the_data}</Text>
       </View>
     </View>
   );

@@ -17,6 +17,7 @@ import SurveyQ6Screen from './Screens/SurveyPages/SurveyQ6'
 import RecentlyUsed from './Screens/RecentlyUsed';
 import Favorites from './Screens/Favorites';
 import ScreeningHistory from './Screens/ScreeningHistory';
+import Hub from './Screens/Hub';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,6 +81,10 @@ const MyStack = () => {
         <Stack.Screen
           name="ScreeningHistory"
           component={ScreeningHistory}
+        />
+        <Stack.Screen
+          name="Hub"
+          component={Hub}
         />
       </Stack.Navigator>
     </NavigationContainer>
