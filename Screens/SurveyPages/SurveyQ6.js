@@ -80,7 +80,7 @@ const Q6 = [
   {key:'DE', value:'Depression, Anxiety, PTSD, Stress'},
   {key:'FS', value:'Financial Stability & Assistance'},
   {key:'HL', value:'Home Life & Home Stability'},
-  {key:'FS', value:'Food & Supply Insecurity'},
+  {key:'FI', value:'Food & Supply Insecurity'},
   {key:'CH', value:'Child or Elder Care Assistance'},
   {key:'DI', value:'Disability Support'},
   {key:'HW', value:'Health & Wellness'},

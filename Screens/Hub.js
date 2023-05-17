@@ -2,13 +2,25 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button, FlatList, Pressable } from 'react-native';
 import React from 'react';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-
+import data from '../JSON/data.json';
 const Hub = ({navigation, route}) =>{
     let {the_data} = route.params;
 
-    const Item = ({title}) => (
+    const DATA = data.values.slice(1).map(row => {
+      return {
+        id: row[0],
+        title: row[1],
+        img: row[2],
+      };
+    }); 
+
+    const Item = ({title, img}) => (
         <View style={styles.item}>
-          <Text style={styles.title}>{title}</Text>
+          <Image 
+            source = {require(`../assets/pictures/Resources/temp.png`)}
+            style = {styles.itemimg}
+          />
+          <Text style={styles.itemtext}>{title}</Text>
         </View>
       );
 
@@ -31,7 +43,7 @@ const Hub = ({navigation, route}) =>{
                   <FlatList
                       horizontal={true}
                       data={DATA}
-                      renderItem={({item}) => <Item title={item.title} />}
+                      renderItem={({item}) => <Item title={item.title}/>}
                       keyExtractor={(item) => item.id}
                   />
               </View>
@@ -40,7 +52,7 @@ const Hub = ({navigation, route}) =>{
                   <FlatList
                       horizontal={true}
                       data={DATA}
-                      renderItem={({item}) => <Item title={item.title} />}
+                      renderItem={({item}) => <Item title={item.title}/>}
                       keyExtractor={(item) => item.id}
                   />
               </View>
@@ -107,7 +119,7 @@ const Hub = ({navigation, route}) =>{
 
 const styles = StyleSheet.create({
     notfooter: {
-      paddingBottom: 125,
+      paddingBottom: 22,
     },
     headerimg: {
         left: 60,
@@ -122,11 +134,22 @@ const styles = StyleSheet.create({
         right: 65,
     },
     item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
+        backgroundColor: 'transparent',
+        padding: 10,
         marginVertical: 8,
         marginHorizontal: 16,
+        height: 150,
+        borderRadius: 15,
       },
+    itemimg: {
+        height: 90,
+        width: 120,
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
+    },
+    itemtext: {
+      textAlign: 'center',
+    },
     ltext: {
         textAlign: 'center',
         paddingBottom: 10,
@@ -135,10 +158,10 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     hlist: {
-        paddingTop: 40,
+        paddingTop: 0,
     },
     hlist2: {
-      paddingTop: 60,
+      paddingTop: 20,
   },
     footer: {
       backgroundColor: '#00274C',
@@ -190,25 +213,13 @@ const styles = StyleSheet.create({
       width: 30,
       height: 20,
       marginBottom: 5,
-    }
+    },
 });
-
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
 
 
 export default Hub
 
 // https://reactnative.dev/docs/flatlist?language=javascript
+
+//FOR API STUFF WITH GOOGLE SHEETS AND INTEGRATING IT WITH REACT
+//https://medium.com/ibjects/simplest-approach-to-build-a-react-native-app-with-google-sheets-api-3f3f89a20079
