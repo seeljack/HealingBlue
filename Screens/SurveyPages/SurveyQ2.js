@@ -6,7 +6,6 @@ import { SelectList } from 'react-native-dropdown-select-list'
 const SurveyQ2 = ({navigation, route}) =>{
   const [selected, setSelected] = React.useState("");
   let {the_data} = route.params;
-  the_data.push(selected)
 
   return(
     <View style={styles.container}>
@@ -26,7 +25,10 @@ const SurveyQ2 = ({navigation, route}) =>{
            <Button
               title="Next"
               color="black"
-              onPress={() => navigation.navigate('SurveyQ3',{the_data: the_data})}
+              onPress={() => {
+                the_data.push(selected)
+                navigation.navigate('SurveyQ3',{the_data: the_data})
+              }}
             />
       </View>
         <View style={{marginTop:50}}>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
 
 
 const Q2 = [
-  {key:'STD', value:'Student', disabled:true},
+  {key:'STD', value:'Student'},
   {key:'STF', value:'Staff'},
   {key:'FFF', value:'Faculty', disabled:true},
 ]

@@ -5,16 +5,28 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import data from '../JSON/data.json';
 const Hub = ({navigation, route}) =>{
     let {the_data} = route.params;
-
+    let user_campus = the_data[1];
+    let user_role = the_data[2];
+    let user_category = the_data[3];
+    let user_school = the_data[4];
+    let user_feeling = the_data[5];
+    let user_concern = the_data[6];
     const DATA = data.values.slice(1).map(row => {
       return {
         id: row[0],
         title: row[1],
         img: row[2],
+        campus: row[3],
+        role: row[4],
+        category: row[5],
+        school: row[6],
+        feeling: row[7],
+        concern: row[8],
       };
     }); 
 
     const Item = ({title, img}) => (
+      <Pressable onPress={() => navigation.navigate('Resource',{the_data: the_data})}>
         <View style={styles.item}>
           <Image 
             source = {require(`../assets/pictures/Resources/temp.png`)}
@@ -22,6 +34,7 @@ const Hub = ({navigation, route}) =>{
           />
           <Text style={styles.itemtext}>{title}</Text>
         </View>
+        </Pressable>
       );
 
     return (
@@ -39,11 +52,18 @@ const Hub = ({navigation, route}) =>{
                 </Text>
               </View>
               <View style = {styles.hlist}>
-                  <Text>{the_data}</Text>
+              <Text>{the_data}</Text>
                   <FlatList
                       horizontal={true}
                       data={DATA}
-                      renderItem={({item}) => <Item title={item.title}/>}
+                      renderItem={({item}) => {
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category)){
+                          return <Item title={item.title}/>;
+                        }
+                        else{
+                          return null;
+                        }
+                      }}
                       keyExtractor={(item) => item.id}
                   />
               </View>
@@ -52,7 +72,14 @@ const Hub = ({navigation, route}) =>{
                   <FlatList
                       horizontal={true}
                       data={DATA}
-                      renderItem={({item}) => <Item title={item.title}/>}
+                      renderItem={({item}) => {
+                      if(item.role == 'STD'){
+                      return <Item title={item.title}/>;
+                      }
+                      else{
+                        return null;
+                      }
+                    }}
                       keyExtractor={(item) => item.id}
                   />
               </View>

@@ -7,7 +7,6 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list'
 const SurveyQ6 = ({navigation, route}) =>{
   const [categories, setCategories] = React.useState([]);
   let {the_data} = route.params;
-  the_data.push(categories);
   return(
     <View style={styles.container}>
       <Text style={styles.textQ1}>
@@ -27,7 +26,10 @@ const SurveyQ6 = ({navigation, route}) =>{
            <Button
               title="Next"
               color="black"
-              onPress={() => navigation.navigate('Hub', {the_data: the_data})}
+              onPress={() => {
+                the_data.push(categories);
+                navigation.navigate('Hub', {the_data: the_data})
+              }}
             />
       </View>
       <View style={{marginTop:50}}>

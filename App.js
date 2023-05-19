@@ -18,6 +18,7 @@ import RecentlyUsed from './Screens/RecentlyUsed';
 import Favorites from './Screens/Favorites';
 import ScreeningHistory from './Screens/ScreeningHistory';
 import Hub from './Screens/Hub';
+import Resource from './Screens/Resource';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,6 +86,10 @@ const MyStack = () => {
         <Stack.Screen
           name="Hub"
           component={Hub}
+        />
+        <Stack.Screen
+          name="Resource"
+          component={Resource}
         />
       </Stack.Navigator>
     </NavigationContainer>
