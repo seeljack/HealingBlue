@@ -1,33 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button, FlatList, Pressable } from 'react-native';
 import React from 'react';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import data from '../JSON/data.json';
 
-
-const Resource = ({navigation, route}) =>{
-    let {the_data} = route.params;
-    return (
-        <View>
-            <Text>{the_data}</Text>
-        </View>
-
-
-
-
-
-
-
-
-    )
+const Resource = ({ navigation, route }) => {
+  let { the_data, the_title, the_role } = route.params;
+  return (
+    <View>
+      <Text>{the_data}</Text>
+      <Text>{the_title}</Text>
+      <Text>{the_role}</Text>
+    </View>
+  );
 };
 
-
-
-
-
-
-
-
-
-export default Resource
+export default Resource;

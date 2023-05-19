@@ -25,8 +25,8 @@ const Hub = ({navigation, route}) =>{
       };
     }); 
 
-    const Item = ({title, img}) => (
-      <Pressable onPress={() => navigation.navigate('Resource',{the_data: the_data})}>
+    const Item = ({title, role, img,}) => (
+      <Pressable onPress={() => navigation.navigate('Resource',{ the_data: the_data, the_title: title, the_role: role})}>
         <View style={styles.item}>
           <Image 
             source = {require(`../assets/pictures/Resources/temp.png`)}
@@ -58,7 +58,8 @@ const Hub = ({navigation, route}) =>{
                       data={DATA}
                       renderItem={({item}) => {
                         if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category)){
-                          return <Item title={item.title}/>;
+                          return <Item title={item.title} role={item.role}/>;
+                          
                         }
                         else{
                           return null;
