@@ -57,7 +57,7 @@ const Hub = ({navigation, route}) =>{
                       horizontal={true}
                       data={DATA}
                       renderItem={({item}) => {
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (item.school == user_campus.school)){
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category)) {
                           return <Item title={item.title} role={item.role}/>;
                         }
                         else{
