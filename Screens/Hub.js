@@ -27,6 +27,7 @@ const Hub = ({navigation, route}) =>{
       };
     }); 
 
+    //Only works if item.school has only one. Must add another loop that goes through each item to
     const checkSchool = (item) => {
           for(let j = 0; j < user_school.length; j++){
             if(user_school[j] == item.school){
