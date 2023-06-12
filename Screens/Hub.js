@@ -11,6 +11,8 @@ const Hub = ({navigation, route}) =>{
     let user_school = the_data[4];
     let user_feeling = the_data[5];
     let user_concern = the_data[6];
+
+
     const DATA = data.values.slice(1).map(row => {
       return {
         id: row[0],
@@ -24,6 +26,15 @@ const Hub = ({navigation, route}) =>{
         concern: row[8],
       };
     }); 
+
+    const checkSchool = (item) => {
+          for(let j = 0; j < user_school.length; j++){
+            if(user_school[j] == item.school){
+              return true;
+            }
+          }
+      return false;
+    }
 
     const Item = ({title, role, img,}) => (
       <Pressable onPress={() => navigation.navigate('Resource',{ the_data: the_data, the_title: title, the_role: role})}>
@@ -52,12 +63,12 @@ const Hub = ({navigation, route}) =>{
                 </Text>
               </View>
               <View style = {styles.hlist}>
-              <Text>{user_school}</Text>
+              <Text>{the_data}</Text>
                   <FlatList
                       horizontal={true}
                       data={DATA}
                       renderItem={({item}) => {
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category)) {
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && checkSchool(item)) {
                           return <Item title={item.title} role={item.role}/>;
                         }
                         else{
