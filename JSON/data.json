@@ -30,7 +30,8 @@
       "temp.png",
       "A",
       "STD",
-      "U"
+      "U",
+      "ED"
     ],
     [
       "2",
@@ -44,17 +45,19 @@
       "3",
       "MSTFM",
       "temp.png",
-      "M",
-      "STF",
-      "M"
+      "A",
+      "STD",
+      "U",
+      "EDBS"
     ],
     [
       "4",
       "DSTFG",
       "temp.png",
-      "D",
-      "STF",
-      "G"
+      "A",
+      "STD",
+      "U",
+      "BSDE"
     ]
   ]
 }

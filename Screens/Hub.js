@@ -52,14 +52,13 @@ const Hub = ({navigation, route}) =>{
                 </Text>
               </View>
               <View style = {styles.hlist}>
-              <Text>{the_data}</Text>
+              <Text>{user_school}</Text>
                   <FlatList
                       horizontal={true}
                       data={DATA}
                       renderItem={({item}) => {
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category)){
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (item.school == user_campus.school)){
                           return <Item title={item.title} role={item.role}/>;
-                          
                         }
                         else{
                           return null;
