@@ -15,7 +15,7 @@
     ],
     [
       "0",
-      "ASTDUAUFRDE",
+      "AU",
       "CAPS-img.png",
       "A",
       "STD",
@@ -26,7 +26,7 @@
     ],
     [
       "1",
-      "ASTDU ",
+      "ED",
       "temp.png",
       "A",
       "STD",
@@ -35,15 +35,16 @@
     ],
     [
       "2",
-      "ASTDU",
+      "EDFF",
       "temp.png",
       "A",
       "STD",
-      "U"
+      "U",
+      "EDFF"
     ],
     [
       "3",
-      "MSTFM",
+      "DE",
       "temp.png",
       "A",
       "STD",
@@ -52,7 +53,7 @@
     ],
     [
       "4",
-      "DSTFG",
+      "BSDE",
       "temp.png",
       "A",
       "STD",

@@ -22,18 +22,36 @@ const Hub = ({navigation, route}) =>{
         role: row[4],
         category: row[5],
         school: row[6],
+        school_one: row[0],
         feeling: row[7],
         concern: row[8],
       };
     }); 
 
+
+    //Gets the number of schools in the resource looking at. 
+    const get_size_school = (item) => {
+      let count = 0;
+      for(let i in item.school){
+        count += 1;
+      }
+      return count / 2;
+    }
+
     //Only works if item.school has only one. Must add another loop that goes through each item to
-    const checkSchool = (item) => {
+    const checkSchool = (item, item_size) => {
+      let item_array = [];
+      for(let i = 0; i < item_size; i += 2){
+        let the_string = item[i] + item[i+1];
+        item_array.push(the_string);
+      }
+      for(let i = 0; i < item_size / 2; i = i+1){
           for(let j = 0; j < user_school.length; j++){
-            if(user_school[j] == item.school){
+            if(user_school[j] == item_array[i]){
               return true;
             }
           }
+      }
       return false;
     }
 
@@ -69,7 +87,8 @@ const Hub = ({navigation, route}) =>{
                       horizontal={true}
                       data={DATA}
                       renderItem={({item}) => {
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && checkSchool(item)) {
+                        let item_size = get_size_school(item);
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && checkSchool(item, item_size)) {
                           return <Item title={item.title} role={item.role}/>;
                         }
                         else{
