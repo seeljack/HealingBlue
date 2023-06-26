@@ -24,6 +24,8 @@ const Hub = ({navigation, route}) =>{
         school: row[6],
         feeling: row[7],
         concern: row[8],
+        email: row[9],
+        description: row[10],
       };
     }); 
 
@@ -107,12 +109,14 @@ const Hub = ({navigation, route}) =>{
         return false;
     }
 
-    const Item = ({title, role, campus, img,}) => (
+    const Item = ({title, role, campus, email, description, img,}) => (
       <Pressable onPress={() => navigation.navigate('Resource',
       { the_data: the_data, 
         the_title: title, 
         the_role: role, 
-        the_campus: campus
+        the_campus: campus,
+        the_email: email,
+        the_description: description,
       })}>
         <View style={styles.item}>
           <Image 
@@ -148,7 +152,7 @@ const Hub = ({navigation, route}) =>{
                         let feeling_size = get_size_feeling(item);
                         let concern_size = get_size_concern(item);
                         if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (checkSchool(item, school_size)) && (checkFeeling(item,feeling_size)) && (checkConcern(item,concern_size))){
-                          return <Item title={item.title} role={item.role} campus={item.campus}/>;
+                          return <Item title={item.title} role={item.role} campus={item.campus} email={item.email} description={item.description}/>;
                         }
                         else{
                           return null;
@@ -164,7 +168,7 @@ const Hub = ({navigation, route}) =>{
                       data={DATA}
                       renderItem={({item}) => {
                       if(item.role == 'STD'){
-                         return <Item title={item.title} role={item.role} campus={item.campus}/>;
+                         return <Item title={item.title} role={item.role} campus={item.campus} email={item.email} description={item.description}/>;
                       }
                       else{
                         return null;

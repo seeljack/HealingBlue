@@ -32,7 +32,7 @@ const printCampus = (the_campus) => {
 
 
 const Resource = ({ navigation, route }) => {
-  let { the_data, the_title, the_role, the_campus} = route.params;
+  let { the_data, the_title, the_role, the_campus, the_email, the_description} = route.params;
   return (
     <View>
       <View style={styles.head}>
@@ -55,6 +55,20 @@ const Resource = ({ navigation, route }) => {
             style = {styles.campusimg}
         />
         <Text>{printCampus(the_campus)}</Text>
+      </View>
+      <View style={styles.email}>
+        <Image 
+            source = {require(`../assets/pictures/emaillogo.png`)}
+            style = {styles.emailimg}
+        />
+        <Text>{the_email}</Text>
+      </View>
+      <View style={styles.description}>
+        <Image 
+            source = {require(`../assets/pictures/infocirclelogo.png`)}
+            style = {styles.emailimg}
+        />
+        <Text style={styles.descriptiontext}>{the_description}</Text>
       </View>
     </View>
   );
@@ -99,6 +113,26 @@ const styles = StyleSheet.create({
     height: 40,
     width: 20,
     marginRight: 9,
+  },
+  email: {
+    paddingLeft: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  emailimg: {
+    height: 40,
+    width: 30,
+    marginRight: 9,
+  },
+  description: {
+    paddingLeft: 30,
+    flexDirection: 'row',
+    alignSelf: 'left',
+    width: '80%'
+  },
+  descriptiontext: {
+    textAlign: 'center',
+    paddingTop: 10,
   },
 });
 

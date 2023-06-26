@@ -11,7 +11,9 @@
       "category",
       "school",
       "feeling",
-      "concern"
+      "concern",
+      "email",
+      "description"
     ],
     [
       "0",
@@ -22,7 +24,9 @@
       "U",
       "ED",
       "FE",
-      "DE"
+      "DE",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "1",
@@ -33,7 +37,9 @@
       "U",
       "ED",
       "FE",
-      "DEFS"
+      "DEFS",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "2",
@@ -44,7 +50,9 @@
       "U",
       "ED",
       "FE",
-      "FSDE"
+      "FSDE",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "3",
@@ -55,7 +63,9 @@
       "U",
       "ED",
       "FE",
-      "DIHW"
+      "DIHW",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "4",
@@ -66,7 +76,9 @@
       "U",
       "ED",
       "FE",
-      "DS"
+      "DS",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "5",
@@ -77,7 +89,9 @@
       "U",
       "ED",
       "FE",
-      "HWDS"
+      "HWDS",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "6",
@@ -88,7 +102,9 @@
       "U",
       "ED",
       "FE",
-      "HL"
+      "HL",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "7",
@@ -99,7 +115,9 @@
       "U",
       "ED",
       "FE",
-      "HL"
+      "HL",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "8",
@@ -110,7 +128,9 @@
       "U",
       "ED",
       "FE",
-      "DEFSDEHIHWDSHL"
+      "DEFSDEHIHWDSHL",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ],
     [
       "",
@@ -121,7 +141,9 @@
       "U",
       "ED",
       "FE",
-      "FI"
+      "FI",
+      "sampleemail@umich.edu",
+      "This is a sample description of what a description of a resource could be like"
     ]
   ]
 }
