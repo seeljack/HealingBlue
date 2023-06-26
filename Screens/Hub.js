@@ -45,6 +45,14 @@ const Hub = ({navigation, route}) =>{
       return count / 2;
     }
 
+    const get_size_concern = (item) => {
+      let count = 0;
+      for(let i in item.concern){
+        count += 1;
+      }
+      return count / 2;
+    }
+
     const checkSchool = (item, item_size) => {
       let item_array = [];
         for(let i = 0; i < item_size; i += 2){
@@ -74,6 +82,24 @@ const Hub = ({navigation, route}) =>{
         for(let i = 0; i < item_size / 2; i = i+1){
             for(let j = 0; j < user_feeling.length; j++){
               if(user_feeling[j] == item_array[i]){
+                return true;
+              }
+            }
+        }
+        return false;
+    }
+
+    const checkConcern = (item, item_size) => {
+      let item_array = [];
+        for(let i = 0; i < item_size; i += 2){
+          let concernletter1 = String(item.concern[i]);
+          let concernletter2 = String(item.concern[i + 1]);
+          let the_concern = concernletter1 + concernletter2;
+          item_array.push(the_concern);
+        }
+        for(let i = 0; i < item_size / 2; i = i+1){
+            for(let j = 0; j < user_concern.length; j++){
+              if(user_concern[j] == item_array[i]){
                 return true;
               }
             }
@@ -113,9 +139,10 @@ const Hub = ({navigation, route}) =>{
                       horizontal={true}
                       data={DATA}
                       renderItem={({item}) => {
-                        let item_size = get_size_school(item);
+                        let school_size = get_size_school(item);
                         let feeling_size = get_size_feeling(item);
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (checkSchool(item, item_size)) && (checkFeeling(item,item_size))) {
+                        let concern_size = get_size_concern(item);
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (checkSchool(item, school_size)) && (checkFeeling(item,feeling_size)) && (checkConcern(item,concern_size))){
                           return <Item title={item.title} role={item.role}/>;
                         }
                         else{
@@ -145,7 +172,7 @@ const Hub = ({navigation, route}) =>{
             <View style = {styles.footer}> 
               <View style = {styles.fourbuttons}>
                 <View style = {styles.eachbuttonr1}>
-                  <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
+                  <Pressable onPress={() => navigation.navigate('SurveyQ1')}>
                     <View style = {styles.buttonimg}>
                         <Image 
                           source = {require('../assets/pictures/pencil.png')}
@@ -156,7 +183,7 @@ const Hub = ({navigation, route}) =>{
                   </Pressable>
                 </View>
                 <View style = {styles.eachbuttonr1}>
-                  <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
+                  <Pressable onPress={() => navigation.navigate('SurveyQ2')}>
                     <View style = {styles.buttonimg}>
                           <Image 
                             source = {require('../assets/pictures/pencil.png')}
@@ -167,7 +194,7 @@ const Hub = ({navigation, route}) =>{
                   </Pressable>
                 </View>
                 <View style = {styles.eachbuttonr2}>
-                  <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
+                  <Pressable onPress={() => navigation.navigate('SurveyQ5')}>
                     <View style = {styles.buttonimg}>
                           <Image 
                             source = {require('../assets/pictures/pencil.png')}
@@ -178,7 +205,7 @@ const Hub = ({navigation, route}) =>{
                   </Pressable>
                 </View>
                 <View style = {styles.eachbuttonr2}>
-                <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
+                <Pressable onPress={() => navigation.navigate('SurveyQ6')}>
                   <View style = {styles.buttonimg}>
                           <Image 
                             source = {require('../assets/pictures/pencil.png')}
