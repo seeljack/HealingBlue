@@ -107,8 +107,13 @@ const Hub = ({navigation, route}) =>{
         return false;
     }
 
-    const Item = ({title, role, img,}) => (
-      <Pressable onPress={() => navigation.navigate('Resource',{ the_data: the_data, the_title: title, the_role: role})}>
+    const Item = ({title, role, campus, img,}) => (
+      <Pressable onPress={() => navigation.navigate('Resource',
+      { the_data: the_data, 
+        the_title: title, 
+        the_role: role, 
+        the_campus: campus
+      })}>
         <View style={styles.item}>
           <Image 
             source = {require(`../assets/pictures/Resources/temp.png`)}
@@ -143,7 +148,7 @@ const Hub = ({navigation, route}) =>{
                         let feeling_size = get_size_feeling(item);
                         let concern_size = get_size_concern(item);
                         if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (checkSchool(item, school_size)) && (checkFeeling(item,feeling_size)) && (checkConcern(item,concern_size))){
-                          return <Item title={item.title} role={item.role}/>;
+                          return <Item title={item.title} role={item.role} campus={item.campus}/>;
                         }
                         else{
                           return null;
@@ -159,7 +164,7 @@ const Hub = ({navigation, route}) =>{
                       data={DATA}
                       renderItem={({item}) => {
                       if(item.role == 'STD'){
-                      return <Item title={item.title}/>;
+                         return <Item title={item.title} role={item.role} campus={item.campus}/>;
                       }
                       else{
                         return null;
