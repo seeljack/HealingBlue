@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "HealingBlue",
     "slug": "HealingBlue",
     "version": "1.0.0",
@@ -19,6 +20,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "jsEngine": "hermes",
       "bundleIdentifier": "com.seeljack.HealingBlue"
     },
     "android": {

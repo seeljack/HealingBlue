@@ -22,7 +22,6 @@ const Hub = ({navigation, route}) =>{
         role: row[4],
         category: row[5],
         school: row[6],
-        school_one: row[0],
         feeling: row[7],
         concern: row[8],
       };
@@ -38,21 +37,48 @@ const Hub = ({navigation, route}) =>{
       return count / 2;
     }
 
-    //Only works if item.school has only one. Must add another loop that goes through each item to
+    const get_size_feeling = (item) => {
+      let count = 0;
+      for(let i in item.feeling){
+        count += 1;
+      }
+      return count / 2;
+    }
+
     const checkSchool = (item, item_size) => {
       let item_array = [];
-      for(let i = 0; i < item_size; i += 2){
-        let the_string = item[i] + item[i+1];
-        item_array.push(the_string);
-      }
-      for(let i = 0; i < item_size / 2; i = i+1){
-          for(let j = 0; j < user_school.length; j++){
-            if(user_school[j] == item_array[i]){
-              return true;
+        for(let i = 0; i < item_size; i += 2){
+          let schoolletter1 = String(item.school[i]);
+          let schoolletter2 = String(item.school[i + 1]);
+          let the_school = schoolletter1 + schoolletter2;
+          item_array.push(the_school);
+        }
+        for(let i = 0; i < item_size / 2; i = i+1){
+            for(let j = 0; j < user_school.length; j++){
+              if(user_school[j] == item_array[i]){
+                return true;
+              }
             }
-          }
-      }
-      return false;
+        }
+        return false;
+    }
+
+    const checkFeeling = (item, item_size) => {
+      let item_array = [];
+        for(let i = 0; i < item_size; i += 2){
+          let feelingletter1 = String(item.feeling[i]);
+          let feelingletter2 = String(item.feeling[i + 1]);
+          let the_feeling = feelingletter1 + feelingletter2;
+          item_array.push(the_feeling);
+        }
+        for(let i = 0; i < item_size / 2; i = i+1){
+            for(let j = 0; j < user_feeling.length; j++){
+              if(user_feeling[j] == item_array[i]){
+                return true;
+              }
+            }
+        }
+        return false;
     }
 
     const Item = ({title, role, img,}) => (
@@ -88,7 +114,8 @@ const Hub = ({navigation, route}) =>{
                       data={DATA}
                       renderItem={({item}) => {
                         let item_size = get_size_school(item);
-                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && checkSchool(item, item_size)) {
+                        let feeling_size = get_size_feeling(item);
+                        if((item.campus == user_campus) && (item.role == user_role) && (item.category == user_category) && (checkSchool(item, item_size)) && (checkFeeling(item,item_size))) {
                           return <Item title={item.title} role={item.role}/>;
                         }
                         else{
