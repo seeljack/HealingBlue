@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button, FlatList, Pressable } from 'reac
 import React from 'react';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import data from '../JSON/data.json';
+import ScreeningHistory from './ScreeningHistory';
 const Hub = ({navigation, route}) =>{
     let {the_data} = route.params;
     let user_campus = the_data[1];
@@ -129,7 +130,7 @@ const Hub = ({navigation, route}) =>{
       );
 
     return (
-        <View>
+        <View style={styles.container}>
           <View style = {styles.notfooter}>
               <View style = {styles.header}> 
                   <Image 
@@ -239,6 +240,11 @@ const Hub = ({navigation, route}) =>{
 
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: '100%',
+    position: 'relative',
+  },
     notfooter: {
       paddingBottom: 22,
     },

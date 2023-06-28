@@ -34,7 +34,7 @@ const printCampus = (the_campus) => {
 const Resource = ({ navigation, route }) => {
   let { the_data, the_title, the_role, the_campus, the_email, the_description} = route.params;
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.head}>
         <Text style={styles.name}>{the_title}</Text>
         <Image 
@@ -69,6 +69,25 @@ const Resource = ({ navigation, route }) => {
             style = {styles.emailimg}
         />
         <Text style={styles.descriptiontext}>{the_description}</Text>
+      </View>
+      <View style={styles.footer}>
+        <View style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                        <Text style={styles.buttontext}>{"Contact"}</Text>
+          </Pressable>
+        </View>
+        <View style={styles.button}>
+          <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                        <Text style={styles.buttontext}>{"Learn More"}</Text>
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.bottomfotter}>
+        <View style={styles.bottombutton}>
+            <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                          <Text style={styles.buttontext}>{"Schedule Appointment"}</Text>
+            </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -131,9 +150,54 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   descriptiontext: {
-    textAlign: 'center',
+    textAlign: 'left',
     paddingTop: 10,
   },
+  footer: {
+    position: 'absolute',
+    bottom: 120,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingRight: 25,
+    
+  },
+  button: {
+    width: 125,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#FFCB05',
+    backgroundColor: '#00274C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 18,
+  },
+  buttontext: {
+    color: 'white',
+  },
+  bottomfotter: {
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+    paddingRight: 25,
+  },
+  bottombutton: {
+    width: 200,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#FFCB05',
+    backgroundColor: '#00274C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 18,
+  },
+  container: {
+    flex: 1,
+    height: '100%',
+    position: 'relative',
+  }
 });
 
 export default Resource;

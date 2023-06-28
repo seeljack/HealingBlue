@@ -33,7 +33,7 @@ const Main = ({navigation}) =>{
             </View>
             <View style = {styles.bubbles}>
                 <Pressable onPress={() => navigation.navigate('ScreeningHistory')}>
-                    <Text style={styles.bubblestext}>{"ScreeningHistory"}</Text>
+                    <Text style={styles.bubblestext}>{"Screening History"}</Text>
                 </Pressable>
             </View>
             <View style = {styles.footer}>
