@@ -3,35 +3,26 @@ import { StyleSheet, Text, View, Image, Button, TextInput} from 'react-native';
 import React from 'react';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import {AsyncStorage} from 'react-native';
+
+
 
 const SurveyQ6 = ({navigation, route}) =>{
   const [categories, setCategories] = React.useState([]);
   let {the_data} = route.params;
 
-  const sendDataToScreeningHistory = () => {
-    // Create the data payload to send
-    const payload = {
-      the_data,
-    };
 
-    // Make an HTTP POST request to the "ScreeningHistory" page's URL
-    fetch('http://35.1.47.96:19000/screening-history', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-    .then((response) => {
-      // Handle the response if needed
-      console.log('Data sent to ScreeningHistory');
-    })
-    .catch((error) => {
-      // Handle the error if any
-      console.error('Error sending data to ScreeningHistory:', error);
-    });
+  _storeData = async () => {
+    the_data_string = the_data.toString()
+    try {
+      await AsyncStorage.setItem(
+        the_data_string, 'I like to save it.'
+      );
+    } catch (error) {
+      // Error saving data
+    }
+  };
 
-  }
   return(
     <View style={styles.container}>
       <Text style={styles.textQ1}>
@@ -53,7 +44,7 @@ const SurveyQ6 = ({navigation, route}) =>{
               color="black"
               onPress={() => {
                 the_data.push(categories);
-                sendDataToScreeningHistory();
+                _storeData();
                 navigation.navigate('Hub', {the_data: the_data})
               }}
             />
