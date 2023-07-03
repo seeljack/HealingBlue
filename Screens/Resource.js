@@ -37,17 +37,33 @@ const printCampus = (the_campus) => {
 
 export const FavoritesContext = createContext();
 
-let STORAGE_KEY = 'favorite';
+
+
 //When the app restarts should be able to still read in the data that persisted
-export const readData = async () => {
-try {
-  const value = await AsyncStorage.getItem(STORAGE_KEY);
-  
-  if (value !== null) {
-    setFavorites(value);
-  }
-  } catch (e) {
-      alert('Failed to fetch the input from storage');
+export const readData = async (setFavorites) => {
+  //This is for console.log stuff in favorites, for debuing 
+  fetchData();
+  try {
+    const value = await AsyncStorage.getItem('favorites');
+    
+    if (value !== null) {
+      setFavorites(value);
+      return value;
+    }
+    } catch (e) {
+        alert(AsyncStorage.getAllKeys)
+        alert('Failed to fetch the input from storage');
+      }
+      return [];
+  };
+
+
+  const fetchData = async () => {
+    try {
+      const data = await AsyncStorage.getItem('Favorite');
+      console.log('AsyncStorage data:', data);
+    } catch (error) {
+      console.log('Error fetching data:', error);
     }
   };
 
@@ -57,15 +73,16 @@ const Resource = ({ navigation, route }) => {
   const [favorites, setFavorites] = useState([]);
 
 
-
   //Saving the data
   const saveData = async (data) => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      await AsyncStorage.setItem('Favorite', JSON.stringify(data))
       alert('Data successfully saved')
     } catch (e) {
       alert('Failed to save the data to the storage')
     }
+    //This is for console.log stuff in favorites, for debuing 
+    fetchData();
   }
 
   const onChangeText = value => setFavorites(value);
