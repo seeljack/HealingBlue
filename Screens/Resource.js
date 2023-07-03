@@ -5,6 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
+//This function is for debugging, it shows what is inside the Asyncstorage for favorites
+const thefetchData = async () => {
+  try {
+    const data = await AsyncStorage.getItem('Favorite');
+    console.log('AsyncStorage data:', data);
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+};
 
 
 const printRole = (the_role) => {
@@ -35,64 +44,52 @@ const printCampus = (the_campus) => {
 }
 
 
-export const FavoritesContext = createContext();
-
-
-
-//When the app restarts should be able to still read in the data that persisted
-export const readData = async (setFavorites) => {
-  //This is for console.log stuff in favorites, for debuing 
-  fetchData();
-  try {
-    const value = await AsyncStorage.getItem('favorites');
-    
-    if (value !== null) {
-      setFavorites(value);
-      return value;
-    }
-    } catch (e) {
-        alert(AsyncStorage.getAllKeys)
-        alert('Failed to fetch the input from storage');
-      }
-      return [];
-  };
-
-
-  const fetchData = async () => {
-    try {
-      const data = await AsyncStorage.getItem('Favorite');
-      console.log('AsyncStorage data:', data);
-    } catch (error) {
-      console.log('Error fetching data:', error);
-    }
-  };
-
 const Resource = ({ navigation, route }) => {
   let { the_data, the_title, the_role, the_campus, the_email, the_description} = route.params;
   const [viewOne, setViewOne] = useState(true);
   const [favorites, setFavorites] = useState([]);
 
+  // AsyncStorage.clear();
 
-  //Saving the data
+
+//-----------THIS IS THE SECTION FOR SAVING THE DATA TO ASYNCSTORAGE -----------------------
+
+  //Saving the data, this saves the data into the AsyncStorage, if data already exist, it adds data to favorites. if not it sets favorites to the data.
   const saveData = async (data) => {
     try {
-      await AsyncStorage.setItem('Favorite', JSON.stringify(data))
-      alert('Data successfully saved')
+      const existingData = await AsyncStorage.getItem('Favorite');
+      if (existingData) {
+          const parsedData = JSON.parse(existingData);
+          const updatedData = {
+            favorites: [...parsedData.favorites, ...data.favorites],
+          };
+          await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
+      } else {
+        const newData = {
+          favorites: data.favorites,
+        };
+        await AsyncStorage.setItem('Favorite', JSON.stringify(newData));
+      }
+      alert('Data successfully saved');
     } catch (e) {
-      alert('Failed to save the data to the storage')
+      alert('Failed to save the data to the storage');
     }
-    //This is for console.log stuff in favorites, for debuing 
     fetchData();
-  }
-
-  const onChangeText = value => setFavorites(value);
-
-  const onSubmitEditing = (favorite) => {
-    if (!favorite) return;
-  
-    saveData(favorite);
   };
 
+  //This is the function that calls saveData and saves it to asyncStorage
+  const onSubmitEditing = (favorites) => {
+    if (!favorites) return;
+  
+    saveData(favorites);
+  };
+
+  //-----------------------------------------------------------------------------------------
+
+
+  //------THIS IS THE SECTION FOR UPDATING THE FAVORITES ARRAY, WHICH NEED WHEN UPDATING THE ASYNCSTORAGE, AND ALSO SWITCHING THE STAR ON AND OFF -----------
+
+  //This is what gets called on the button to see what value the star is at already and then either call the addToFavorites, or removeFromFavorites
   const changeView = () => {
     setViewOne(!viewOne);
     if (viewOne) {
@@ -102,23 +99,7 @@ const Resource = ({ navigation, route }) => {
     }
   };
 
-
-  const addToFavorites = () => {
-    setFavorites([...favorites, the_title, the_role, the_campus, the_email]); // Add the resource to the favorites array
-  };
-
-  const removeFromFavorites = () => {
-      const updatedFavorites = favorites.filter(
-        (item) =>
-          item[0] == the_title ||
-          item[1] == the_role ||
-          item[2] == the_campus ||
-          item[3] == the_email
-      );
-      setFavorites(updatedFavorites);
-  };
-
-
+  //This changes the View of the favorites, when you hit the star
   const the_view = () => {
     if(viewOne == true){
       return (
@@ -139,10 +120,28 @@ const Resource = ({ navigation, route }) => {
   }
 
 
+  //When you hit the star this adds the resource to the favorites
+  const addToFavorites = () => {
+    setFavorites([...favorites, the_title, the_role, the_campus, the_email]); // Add the resource to the favorites array
+  };
+
+  //If you undo the star this deletes the resource from favorites
+  const removeFromFavorites = () => {
+    const updatedFavorites = favorites.filter(
+      (item) =>
+        item[0] == the_title ||
+        item[1] == the_role ||
+        item[2] == the_campus ||
+        item[3] == the_email
+    );
+    setFavorites(updatedFavorites);
+};
+
+
+//-------------------------------------------------------------------------------------------------------------------
 
   return (
       <View style={styles.container}>
-        <Text>{onChangeText}</Text>
        <Text>{onSubmitEditing({favorites})}</Text>
         <Text>{favorites}</Text>
               <TouchableOpacity onPress={changeView}>
