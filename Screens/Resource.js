@@ -1,6 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Button, FlatList, Pressable } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, Button, FlatList, Pressable, ImageBackground, TouchableHighlight, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, createContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
+
 
 const printRole = (the_role) => {
   if(the_role == "STD"){
@@ -30,76 +35,177 @@ const printCampus = (the_campus) => {
 }
 
 
+export const FavoritesContext = createContext();
+
+let STORAGE_KEY = 'favorite';
+//When the app restarts should be able to still read in the data that persisted
+export const readData = async () => {
+try {
+  const value = await AsyncStorage.getItem(STORAGE_KEY);
+  
+  if (value !== null) {
+    setFavorites(value);
+  }
+  } catch (e) {
+      alert('Failed to fetch the input from storage');
+    }
+  };
 
 const Resource = ({ navigation, route }) => {
   let { the_data, the_title, the_role, the_campus, the_email, the_description} = route.params;
+  const [viewOne, setViewOne] = useState(true);
+  const [favorites, setFavorites] = useState([]);
+
+
+
+  //Saving the data
+  const saveData = async (data) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      alert('Data successfully saved')
+    } catch (e) {
+      alert('Failed to save the data to the storage')
+    }
+  }
+
+  const onChangeText = value => setFavorites(value);
+
+  const onSubmitEditing = (favorite) => {
+    if (!favorite) return;
+  
+    saveData(favorite);
+  };
+
+  const changeView = () => {
+    setViewOne(!viewOne);
+    if (viewOne) {
+      addToFavorites();
+    } else {
+      removeFromFavorites();
+    }
+  };
+
+
+  const addToFavorites = () => {
+    setFavorites([...favorites, the_title, the_role, the_campus, the_email]); // Add the resource to the favorites array
+  };
+
+  const removeFromFavorites = () => {
+      const updatedFavorites = favorites.filter(
+        (item) =>
+          item[0] == the_title ||
+          item[1] == the_role ||
+          item[2] == the_campus ||
+          item[3] == the_email
+      );
+      setFavorites(updatedFavorites);
+  };
+
+
+  const the_view = () => {
+    if(viewOne == true){
+      return (
+        <Image 
+            source = {require(`../assets/pictures/star_unfilled.png`)}
+            style = {styles.headerimg}
+        />
+      )
+    }
+    else{
+      return (
+        <Image 
+            source = {require(`../assets/pictures/star_filled.png`)}
+            style = {styles.headerimg}
+        />
+      )
+    }
+  }
+
+
+
   return (
-    <View style={styles.container}>
-      <View style={styles.head}>
-        <Text style={styles.name}>{the_title}</Text>
-        <Image 
-            source = {require(`../assets/pictures/Resources/temp.png`)}
-            style = {styles.itemimg}
-        />
-      </View>
-      <View style={styles.students}>
-        <Image 
-            source = {require(`../assets/pictures/personlogo.png`)}
-            style = {styles.studentimg}
-        />
-        <Text>{printRole(the_role)}</Text>
-      </View>
-      <View style={styles.campus}>
-        <Image 
-            source = {require(`../assets/pictures/pinlogo.png`)}
-            style = {styles.campusimg}
-        />
-        <Text>{printCampus(the_campus)}</Text>
-      </View>
-      <View style={styles.email}>
-        <Image 
-            source = {require(`../assets/pictures/emaillogo.png`)}
-            style = {styles.emailimg}
-        />
-        <Text>{the_email}</Text>
-      </View>
-      <View style={styles.description}>
-        <Image 
-            source = {require(`../assets/pictures/infocirclelogo.png`)}
-            style = {styles.emailimg}
-        />
-        <Text style={styles.descriptiontext}>{the_description}</Text>
-      </View>
-      <View style={styles.footer}>
-        <View style={styles.button}>
-          <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
-                        <Text style={styles.buttontext}>{"Contact"}</Text>
-          </Pressable>
+      <View style={styles.container}>
+        <Text>{onChangeText}</Text>
+       <Text>{onSubmitEditing({favorites})}</Text>
+        <Text>{favorites}</Text>
+              <TouchableOpacity onPress={changeView}>
+                  <ImageBackground>{the_view()}</ImageBackground>
+            </TouchableOpacity>
+        <View style={styles.head}>
+          <Text style={styles.name}>{the_title}</Text>
+          <Image 
+              source = {require(`../assets/pictures/Resources/temp.png`)}
+              style = {styles.itemimg}
+          />
         </View>
-        <View style={styles.button}>
-          <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
-                        <Text style={styles.buttontext}>{"Learn More"}</Text>
-          </Pressable>
+        <View style={styles.students}>
+          <Image 
+              source = {require(`../assets/pictures/personlogo.png`)}
+              style = {styles.studentimg}
+          />
+          <Text>{printRole(the_role)}</Text>
         </View>
-      </View>
-      <View style={styles.bottomfotter}>
-        <View style={styles.bottombutton}>
+        <View style={styles.campus}>
+          <Image 
+              source = {require(`../assets/pictures/pinlogo.png`)}
+              style = {styles.campusimg}
+          />
+          <Text>{printCampus(the_campus)}</Text>
+        </View>
+        <View style={styles.email}>
+          <Image 
+              source = {require(`../assets/pictures/emaillogo.png`)}
+              style = {styles.emailimg}
+          />
+          <Text>{the_email}</Text>
+        </View>
+        <View style={styles.description}>
+          <Image 
+              source = {require(`../assets/pictures/infocirclelogo.png`)}
+              style = {styles.emailimg}
+          />
+          <Text style={styles.descriptiontext}>{the_description}</Text>
+        </View>
+        <View style={styles.footer}>
+          <View style={styles.button}>
             <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
-                          <Text style={styles.buttontext}>{"Schedule Appointment"}</Text>
+                          <Text style={styles.buttontext}>{"Contact"}</Text>
             </Pressable>
+          </View>
+          <View style={styles.button}>
+            <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                          <Text style={styles.buttontext}>{"Learn More"}</Text>
+            </Pressable>
+          </View>
+        </View>
+        <View style={styles.bottomfotter}>
+          <View style={styles.bottombutton}>
+              <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                            <Text style={styles.buttontext}>{"Schedule Appointment"}</Text>
+              </Pressable>
+          </View>
         </View>
       </View>
-    </View>
   );
 };
 
 
 const styles = StyleSheet.create({
+  header: {
+    paddingTop: 5,
+    height: 0,
+  },
+  headerimg: {
+    width: 50,
+    height: 50,
+    alignSelf: 'flex-end',
+
+  },
   name: {
     fontSize: 32,
   },
   head: {
-    paddingTop: 70,
+    paddingTop: 7,
     paddingLeft: 60,
     flexDirection: 'row',
     alignItems: 'center',
@@ -158,7 +264,7 @@ const styles = StyleSheet.create({
     bottom: 120,
     alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     paddingRight: 25,
     
   },
@@ -197,7 +303,20 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     position: 'relative',
-  }
+  },
+  buttontext2: {
+    color: 'black',
+  },
+  button2: {
+    width: 125,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#FFCB05',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 18,
+  },
 });
 
 export default Resource;

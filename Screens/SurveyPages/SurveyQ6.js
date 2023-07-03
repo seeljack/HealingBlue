@@ -12,17 +12,6 @@ const SurveyQ6 = ({navigation, route}) =>{
   let {the_data} = route.params;
 
 
-  _storeData = async () => {
-    the_data_string = the_data.toString()
-    try {
-      await AsyncStorage.setItem(
-        the_data_string, 'I like to save it.'
-      );
-    } catch (error) {
-      // Error saving data
-    }
-  };
-
   return(
     <View style={styles.container}>
       <Text style={styles.textQ1}>
@@ -44,7 +33,6 @@ const SurveyQ6 = ({navigation, route}) =>{
               color="black"
               onPress={() => {
                 the_data.push(categories);
-                _storeData();
                 navigation.navigate('Hub', {the_data: the_data})
               }}
             />

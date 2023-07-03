@@ -9,28 +9,11 @@ import {AsyncStorage} from 'react-native';
 
 
 const ScreeningHistory = ({navigation, route}) =>{    
-
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem(route.params.the_data_string);
-      if (value !== null) {
-        // We have data!!
-        const parsedData = JSON.parse(value);
-        setData(parsedData);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-    return value;
-  };
    
     return (
         <View>
             <Text>History of Past Screenings</Text>
             <View style={styles.allbuttons}>
-                <View style={styles.buttonstyle}>
-                    <Text>{_retrieveData()}</Text>
-                </View>
                 <View style={styles.buttonstyle}>
                     <Pressable onPress={() => navigation.navigate('Hub')}>
                             <Text>"PAST SCREENING, WILL SHOW DATE AND TIME OF SCREENING"</Text>
