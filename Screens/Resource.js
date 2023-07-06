@@ -8,8 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //This function is for debugging, it shows what is inside the Asyncstorage for favorites
 const thefetchData = async () => {
   try {
-    const data = await AsyncStorage.getItem('Favorite');
+    const data = await AsyncStorage.getItem('Star');
     console.log('AsyncStorage data:', data);
+    console.log('\n \n \n \n \n \n \n ');
   } catch (error) {
     console.log('Error fetching data:', error);
   }
@@ -52,19 +53,51 @@ const Resource = ({ navigation, route }) => {
   // AsyncStorage.clear();
 
 
+  // This is for setting the star equal to its previous color
+  useEffect(() => {
+    //This function fetches the data from AsyncStorage
+    const getfetchData = async () => {
+      try {
+        const data = await AsyncStorage.getItem('Star');
+        console.log("THE DAJRSNVOISNEOCIN" + data)
+        if(data == 'false'){
+          setViewOne(true)
+        }
+        else{
+          setViewOne(false)
+        }
+      } catch (error) {
+        console.log('Error fetching data:1', error);
+      }
+    };
+    getfetchData();
+  }, []);
+
 //-----------THIS IS THE SECTION FOR SAVING THE DATA TO ASYNCSTORAGE -----------------------
 
   //Saving the data, this saves the data into the AsyncStorage, if data already exist, it adds data to favorites. if not it sets favorites to the data.
   const saveData = async (data) => {
     try {
       const existingData = await AsyncStorage.getItem('Favorite');
+      dont_add = false;
       if (existingData) {
+          //TO SEE IF THE DATA IS ALREADY IN THE THE FAVORITES AND IF ITS IS DONT ADD IT
           const parsedData = JSON.parse(existingData);
+          for(let i = 0; i < existingData.length; i+=5){
+            if(parsedData.favorites[i] != undefined){
+              if(parsedData.favorites[i] == data.favorites[0]){
+                dont_add = true;
+                console.log("DATA IS THE SAME WONT ADD")
+              }
+            }
+          }
+          if(dont_add == false){
           const updatedData = {
             favorites: [...parsedData.favorites, ...data.favorites],
           };
           await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
-      } else {
+      } 
+     } else {
         const newData = {
           favorites: data.favorites,
         };
@@ -74,7 +107,7 @@ const Resource = ({ navigation, route }) => {
     } catch (e) {
       alert('Failed to save the data to the storage');
     }
-    fetchData();
+    // thefetchData();
   };
 
   //This is the function that calls saveData and saves it to asyncStorage
@@ -94,8 +127,13 @@ const Resource = ({ navigation, route }) => {
     setViewOne(!viewOne);
     if (viewOne) {
       addToFavorites();
+      //Save the color of the star in async storage so when come back to page star is same color
+      AsyncStorage.setItem('Star', 'true')
+      thefetchData()
     } else {
       removeFromFavorites();
+      //Save the color of the star in async storage so when come back to page star is same color
+      AsyncStorage.setItem('Star', 'false')
     }
   };
 
@@ -122,7 +160,7 @@ const Resource = ({ navigation, route }) => {
 
   //When you hit the star this adds the resource to the favorites
   const addToFavorites = () => {
-    setFavorites([...favorites, the_title, the_role, the_campus, the_email]); // Add the resource to the favorites array
+      setFavorites([...favorites, the_title, the_role, the_campus, the_email, the_description]); // Add the resource to the favorites array
   };
 
   //If you undo the star this deletes the resource from favorites
@@ -132,7 +170,8 @@ const Resource = ({ navigation, route }) => {
         item[0] == the_title ||
         item[1] == the_role ||
         item[2] == the_campus ||
-        item[3] == the_email
+        item[3] == the_email ||
+        item[4] == the_description
     );
     setFavorites(updatedFavorites);
 };
