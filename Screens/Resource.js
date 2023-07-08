@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //This function is for debugging, it shows what is inside the Asyncstorage for favorites
 const thefetchData = async () => {
   try {
-    const data = await AsyncStorage.getItem('Star');
+    const data = await AsyncStorage.getItem('Favorite');
     console.log('AsyncStorage data:', data);
     console.log('\n \n \n \n \n \n \n ');
   } catch (error) {
@@ -58,13 +58,13 @@ const Resource = ({ navigation, route }) => {
     //This function fetches the data from AsyncStorage
     const getfetchData = async () => {
       try {
-        const data = await AsyncStorage.getItem('Star');
-        console.log("THE DAJRSNVOISNEOCIN" + data)
-        if(data == 'false'){
-          setViewOne(true)
+        const data = await AsyncStorage.getItem(the_title);
+        console.log("THE TITLE " + the_title + " " + data)
+        if(data == 'true'){
+          setViewOne(false)
         }
         else{
-          setViewOne(false)
+          setViewOne(true)
         }
       } catch (error) {
         console.log('Error fetching data:1', error);
@@ -79,31 +79,42 @@ const Resource = ({ navigation, route }) => {
   const saveData = async (data) => {
     try {
       const existingData = await AsyncStorage.getItem('Favorite');
-      dont_add = false;
+      let deleteData = false;
       if (existingData) {
           //TO SEE IF THE DATA IS ALREADY IN THE THE FAVORITES AND IF ITS IS DONT ADD IT
           const parsedData = JSON.parse(existingData);
           for(let i = 0; i < existingData.length; i+=5){
             if(parsedData.favorites[i] != undefined){
               if(parsedData.favorites[i] == data.favorites[0]){
-                dont_add = true;
-                console.log("DATA IS THE SAME WONT ADD")
+                deleteData = true;
+                console.log("DATA IS THE SAME DELETE IT")
               }
             }
           }
-          if(dont_add == false){
-          const updatedData = {
-            favorites: [...parsedData.favorites, ...data.favorites],
-          };
-          await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
-      } 
-     } else {
+          if(deleteData == false){
+            const updatedData = {
+              favorites: [...parsedData.favorites, ...data.favorites],
+            };
+            await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
+          } 
+          // else if (deleteData == true){
+          //   console.log("FOSIDNCOICNDSCOINCSDC " + the_title);
+          //   const index = favorites.indexOf(the_title);
+          //   const updatedFavorites = [...favorites];
+          //   updatedFavorites.splice(index, 5);
+          //   // setFavorites(updatedFavorites);
+          //   await AsyncStorage.setItem('Favorite', JSON.stringify(updatedFavorites));
+          // //   thefetchData();
+
+          // }
+        } 
+     else {
         const newData = {
           favorites: data.favorites,
         };
         await AsyncStorage.setItem('Favorite', JSON.stringify(newData));
       }
-      alert('Data successfully saved');
+      // alert('Data successfully saved');
     } catch (e) {
       alert('Failed to save the data to the storage');
     }
@@ -128,12 +139,13 @@ const Resource = ({ navigation, route }) => {
     if (viewOne) {
       addToFavorites();
       //Save the color of the star in async storage so when come back to page star is same color
-      AsyncStorage.setItem('Star', 'true')
+      console.log("FAVORITES " + the_title)
+      AsyncStorage.setItem(the_title, 'true')
       thefetchData()
     } else {
       removeFromFavorites();
       //Save the color of the star in async storage so when come back to page star is same color
-      AsyncStorage.setItem('Star', 'false')
+      AsyncStorage.setItem(the_title, 'false')
     }
   };
 
@@ -165,15 +177,16 @@ const Resource = ({ navigation, route }) => {
 
   //If you undo the star this deletes the resource from favorites
   const removeFromFavorites = () => {
-    const updatedFavorites = favorites.filter(
-      (item) =>
-        item[0] == the_title ||
-        item[1] == the_role ||
-        item[2] == the_campus ||
-        item[3] == the_email ||
-        item[4] == the_description
-    );
-    setFavorites(updatedFavorites);
+    // setFavorites(favorites);
+    // console.log("BEFORE REMOVE ")
+    // thefetchData()
+    const index = favorites.indexOf(the_title);
+    if (index !== -1) {
+      favorites.splice(index, 5); // Remove 5 elements starting from the index
+      setFavorites([...favorites]); // Update the state with the modified favorites array
+    }
+    // console.log("AFTER REMOVE ")
+    // thefetchData()
 };
 
 
