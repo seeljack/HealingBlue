@@ -80,6 +80,7 @@ const Resource = ({ navigation, route }) => {
     try {
       const existingData = await AsyncStorage.getItem('Favorite');
       let deleteData = false;
+      let index = 0;
       if (existingData) {
           //TO SEE IF THE DATA IS ALREADY IN THE THE FAVORITES AND IF ITS IS DONT ADD IT
           const parsedData = JSON.parse(existingData);
@@ -87,6 +88,7 @@ const Resource = ({ navigation, route }) => {
             if(parsedData.favorites[i] != undefined){
               if(parsedData.favorites[i] == data.favorites[0]){
                 deleteData = true;
+                index = i;
                 console.log("DATA IS THE SAME DELETE IT")
               }
             }
@@ -96,18 +98,24 @@ const Resource = ({ navigation, route }) => {
               favorites: [...parsedData.favorites, ...data.favorites],
             };
             await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
+            thefetchData()
+            return;
           } 
-          // else if (deleteData == true){
-          //   console.log("FOSIDNCOICNDSCOINCSDC " + the_title);
-          //   const index = favorites.indexOf(the_title);
-          //   const updatedFavorites = [...favorites];
-          //   updatedFavorites.splice(index, 5);
-          //   // setFavorites(updatedFavorites);
-          //   await AsyncStorage.setItem('Favorite', JSON.stringify(updatedFavorites));
-          // //   thefetchData();
-
-          // }
-        } 
+          else if (deleteData == true){
+              // Remove the index that was equal to the tittle, and then 5 after that too
+              parsedData.favorites.splice(index, index + 5);
+      
+              // Store the modified array back into AsyncStorage
+              await AsyncStorage.setItem('Favorite', JSON.stringify(parsedData));
+              console.log(' 5 favorites deleted successfully');
+      
+              // Fetch and log the updated AsyncStorage data for verification
+              const newData = await AsyncStorage.getItem('Favorite');
+              console.log('Updated AsyncStorage data:', newData);
+              thefetchData()
+              return;
+      }
+    }
      else {
         const newData = {
           favorites: data.favorites,
@@ -181,10 +189,10 @@ const Resource = ({ navigation, route }) => {
     // console.log("BEFORE REMOVE ")
     // thefetchData()
     const index = favorites.indexOf(the_title);
-    if (index !== -1) {
+      if (index !== -1) {
       favorites.splice(index, 5); // Remove 5 elements starting from the index
       setFavorites([...favorites]); // Update the state with the modified favorites array
-    }
+      }
     // console.log("AFTER REMOVE ")
     // thefetchData()
 };
@@ -194,9 +202,9 @@ const Resource = ({ navigation, route }) => {
 
   return (
       <View style={styles.container}>
-       <Text>{onSubmitEditing({favorites})}</Text>
         <Text>{favorites}</Text>
               <TouchableOpacity onPress={changeView}>
+                  <Text>{onSubmitEditing({favorites})}</Text>
                   <ImageBackground>{the_view()}</ImageBackground>
             </TouchableOpacity>
         <View style={styles.head}>
