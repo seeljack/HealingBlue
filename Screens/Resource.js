@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button, FlatList, Pressable, ImageBackground, TouchableHighlight, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, createContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 
 
@@ -75,16 +75,16 @@ const Resource = ({ navigation, route }) => {
 
 //-----------THIS IS THE SECTION FOR SAVING THE DATA TO ASYNCSTORAGE -----------------------
 
-  //Saving the data, this saves the data into the AsyncStorage, if data already exist, it adds data to favorites. if not it sets favorites to the data.
+  //Saving the data, this saves the data into the AsyncStorage, if data already exist, it adds data to favorites. if not it sets favorites to the data. If resource already exists it deletes it
   const saveData = async (data) => {
     try {
       const existingData = await AsyncStorage.getItem('Favorite');
       let deleteData = false;
       let index = 0;
-      if (existingData) {
-          //TO SEE IF THE DATA IS ALREADY IN THE THE FAVORITES AND IF ITS IS DONT ADD IT
+      if (existingData && existingData.length > 0) {
+          //TO SEE IF THE DATA IS ALREADY IN THE THE FAVORITES AND IF ITS IS DELTE IT
           const parsedData = JSON.parse(existingData);
-          for(let i = 0; i < existingData.length; i+=5){
+          for(let i = 0; i < parsedData.favorites.length; i+=5){
             if(parsedData.favorites[i] != undefined){
               if(parsedData.favorites[i] == data.favorites[0]){
                 deleteData = true;
@@ -102,16 +102,18 @@ const Resource = ({ navigation, route }) => {
             return;
           } 
           else if (deleteData == true){
-              // Remove the index that was equal to the tittle, and then 5 after that too
+              // Remove the index that was equal to the tittle, and then 5 after that too. Keeps executing need to make it stop after one time thats why change indexbool = false
               parsedData.favorites.splice(index, index + 5);
-      
+
+              const updatedData = {
+                favorites: parsedData.favorites,
+              };
+
               // Store the modified array back into AsyncStorage
-              await AsyncStorage.setItem('Favorite', JSON.stringify(parsedData));
+              await AsyncStorage.setItem('Favorite', JSON.stringify(updatedData));
+              setFavorites(parsedData.favorites); // Update the state with the modified favorites array
               console.log(' 5 favorites deleted successfully');
-      
-              // Fetch and log the updated AsyncStorage data for verification
-              const newData = await AsyncStorage.getItem('Favorite');
-              console.log('Updated AsyncStorage data:', newData);
+  
               thefetchData()
               return;
       }
@@ -123,15 +125,16 @@ const Resource = ({ navigation, route }) => {
         await AsyncStorage.setItem('Favorite', JSON.stringify(newData));
       }
       // alert('Data successfully saved');
-    } catch (e) {
+    } catch (error) {
       alert('Failed to save the data to the storage');
+      console.log(error)
     }
     // thefetchData();
   };
 
   //This is the function that calls saveData and saves it to asyncStorage
   const onSubmitEditing = (favorites) => {
-    if (!favorites) return;
+    if (!favorites.favorites) return;
   
     saveData(favorites);
   };
@@ -188,11 +191,11 @@ const Resource = ({ navigation, route }) => {
     // setFavorites(favorites);
     // console.log("BEFORE REMOVE ")
     // thefetchData()
-    const index = favorites.indexOf(the_title);
-      if (index !== -1) {
-      favorites.splice(index, 5); // Remove 5 elements starting from the index
-      setFavorites([...favorites]); // Update the state with the modified favorites array
-      }
+    // const index = favorites.indexOf(the_title);
+    //   if (index !== -1) {
+    //   favorites.splice(index, 5); // Remove 5 elements starting from the index
+    //   setFavorites([...favorites]); // Update the state with the modified favorites array
+    //   }
     // console.log("AFTER REMOVE ")
     // thefetchData()
 };
