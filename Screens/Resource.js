@@ -222,7 +222,6 @@ const Resource = ({ navigation, route }) => {
       AsyncStorage.setItem(the_title, 'false')
       onSubmitEditing(theupdatedfavorites)
     }
-
   };
 
   //This changes the View of the favorites, when you hit the star

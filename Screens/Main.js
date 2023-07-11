@@ -15,15 +15,9 @@ const Main = ({navigation}) =>{
             <View style = {styles.dashboard}>
                 <Text style = {styles.dashtext}> Dashboard</Text>
             </View>
-            <View style = {styles.bubbles1}>
-                {/* This IS how to do a button and style it!!!!!!!!! Below */}
-                <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
-                    <Text style={styles.buttontext1}>{"New Screening"}</Text>
-                </Pressable>
-            </View>
             <View style = {styles.bubbles}>
-                <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
-                    <Text style={styles.bubblestext}>{"Recently Used"}</Text>
+                <Pressable onPress={() => navigation.navigate('MainHub')}>
+                    <Text style={styles.bubblestext}>{"Resources"}</Text>
                 </Pressable>
             </View>
             <View style = {styles.bubbles}>
@@ -32,8 +26,14 @@ const Main = ({navigation}) =>{
                 </Pressable>
             </View>
             <View style = {styles.bubbles}>
-                <Pressable onPress={() => navigation.navigate('ScreeningHistory')}>
-                    <Text style={styles.bubblestext}>{"Screening History"}</Text>
+                <Pressable onPress={() => navigation.navigate('RecentlyUsed')}>
+                    <Text style={styles.bubblestext}>{"Recently Used"}</Text>
+                </Pressable>
+            </View>
+            <View style = {styles.bubbles1}>
+                {/* This IS how to do a button and style it!!!!!!!!! Below */}
+                <Pressable onPress={() => navigation.navigate('SurveyInterm')}>
+                    <Text style={styles.buttontext1}>{"New Screening"}</Text>
                 </Pressable>
             </View>
             <View style = {styles.footer}>
@@ -45,7 +45,6 @@ const Main = ({navigation}) =>{
                     />
                 </View>
             </View>
-
         </View>
     )
 };
