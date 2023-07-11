@@ -47,7 +47,7 @@ const printCampus = (the_campus) => {
 
 const Resource = ({ navigation, route }) => {
   let { the_data, the_title, the_role, the_campus, the_email, the_description} = route.params;
-  const [viewOne, setViewOne] = useState(true);
+  const [viewOne, setViewOne] = useState(false);
   const [favorites, setFavorites] = useState([]);
 
   // AsyncStorage.clear();
@@ -61,16 +61,19 @@ const Resource = ({ navigation, route }) => {
         const data = await AsyncStorage.getItem(the_title);
         console.log("THE TITLE " + the_title + " " + data)
         if(data == 'true'){
-          setViewOne(false)
+          setViewOne(true)
+          the_view();
         }
         else{
-          setViewOne(true)
+          setViewOne(false)
+          the_view();
         }
       } catch (error) {
         console.log('Error fetching data:1', error);
       }
     };
     getfetchData();
+    the_view();
   }, []);
 
 //-----------THIS IS THE SECTION FOR SAVING THE DATA TO ASYNCSTORAGE -----------------------
@@ -203,8 +206,9 @@ const Resource = ({ navigation, route }) => {
 
   //This is what gets called on the button to see what value the star is at already and then either call the addToFavorites, or removeFromFavorites
   const changeView = () => {
-    setViewOne(!viewOne);
-    if (viewOne) {
+    tempView = !viewOne;
+    setViewOne(tempView);
+    if (tempView) {
       updatedfavorites = addToFavorites();
       //Save the color of the star in async storage so when come back to page star is same color
       console.log("FAVORITES " + the_title)
@@ -212,10 +216,11 @@ const Resource = ({ navigation, route }) => {
       thefetchData()
       onSubmitEditing(updatedfavorites)
     } else {
-      removeFromFavorites();
+      let theupdatedfavorites;
+      theupdatedfavorites = removeFromFavorites();
       //Save the color of the star in async storage so when come back to page star is same color
       AsyncStorage.setItem(the_title, 'false')
-      onSubmitEditing(favorites)
+      onSubmitEditing(theupdatedfavorites)
     }
 
   };
@@ -225,7 +230,7 @@ const Resource = ({ navigation, route }) => {
     if(viewOne == true){
       return (
         <Image 
-            source = {require(`../assets/pictures/star_unfilled.png`)}
+            source = {require('../assets/pictures/star_filled.png')}
             style = {styles.headerimg}
         />
       )
@@ -233,7 +238,7 @@ const Resource = ({ navigation, route }) => {
     else{
       return (
         <Image 
-            source = {require(`../assets/pictures/star_filled.png`)}
+            source = {require(`../assets/pictures/star_unfilled.png`)}
             style = {styles.headerimg}
         />
       )
@@ -253,14 +258,17 @@ const Resource = ({ navigation, route }) => {
     // setFavorites(favorites);
     // console.log("BEFORE REMOVE ")
     // thefetchData()
-    // const index = favorites.indexOf(the_title);
-    //   if (index !== -1) {
-    //   favorites.splice(index, 5); // Remove 5 elements starting from the index
-    //   setFavorites([...favorites]); // Update the state with the modified favorites array
-    //   }
+    const updatedFavorites = favorites;
+    const index = favorites.indexOf(the_title);
+      if (index !== -1) {
+        favorites.splice(index, 5); // Remove 5 elements starting from the index
+        updatedFavorites = [...favorites];
+        setFavorites(updatedFavorites); // Update the state with the modified favorites array
+        return updatedFavorites
+      }
     // console.log("AFTER REMOVE ")
     // thefetchData()
-};
+    };
 
 
 //-------------------------------------------------------------------------------------------------------------------
