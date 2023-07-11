@@ -258,14 +258,16 @@ const Resource = ({ navigation, route }) => {
     // setFavorites(favorites);
     // console.log("BEFORE REMOVE ")
     // thefetchData()
-    const updatedFavorites = favorites;
-    const index = favorites.indexOf(the_title);
-      if (index !== -1) {
-        favorites.splice(index, 5); // Remove 5 elements starting from the index
-        updatedFavorites = [...favorites];
-        setFavorites(updatedFavorites); // Update the state with the modified favorites array
-        return updatedFavorites
-      }
+    const updatedFavorites = [...favorites, the_title, the_role, the_campus, the_email, the_description];
+    setFavorites(updatedFavorites);
+    // const index = favorites.indexOf(the_title);
+    //   if (index !== -1) {
+    //     favorites.splice(index, 5); // Remove 5 elements starting from the index
+    //     updatedFavorites = [...favorites];
+    //     setFavorites(updatedFavorites); // Update the state with the modified favorites array
+    //     return updatedFavorites
+    //   }
+      return updatedFavorites;
     // console.log("AFTER REMOVE ")
     // thefetchData()
     };
