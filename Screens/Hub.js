@@ -1,9 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Button, FlatList, Pressable } from 'react-native';
+import { StatusBar, StyleSheet, useState, useEffect,Text, View, Image, Button, FlatList, Pressable } from 'react-native';
 import React from 'react';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import data from '../JSON/data.json';
 import ScreeningHistory from './ScreeningHistory';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
+
+
+// Rest of your code...
+
+
+
+//This function is for debugging, it shows what is inside the Asyncstorage for favorites
+const thefetchData = async () => {
+  try {
+    const data = await AsyncStorage.getItem('Screenings');
+    console.log('AsyncStorage data:', data);
+    console.log('\n \n \n \n \n \n \n ');
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+};
+
+
+
 const Hub = ({navigation, route}) =>{
     let {the_data} = route.params;
     let user_campus = the_data[1];
@@ -12,7 +30,6 @@ const Hub = ({navigation, route}) =>{
     let user_school = the_data[4];
     let user_feeling = the_data[5];
     let user_concern = the_data[6];
-
 
     const DATA = data.values.slice(1).map(row => {
       return {
@@ -30,6 +47,17 @@ const Hub = ({navigation, route}) =>{
       };
     }); 
 
+    // useEffect(() => {
+    //   //This function fetches the data from AsyncStorage
+    //   const fetchData = async () => {
+    //     try {
+
+    //     } catch (error) {
+    //       console.log('Error fetching data:1', error);
+    //     }
+    //   };
+    //   fetchData();
+    // }, []);
 
     //Gets the number of schools in the resource looking at. 
     const get_size_school = (item) => {

@@ -1,25 +1,64 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button, FlatList, Pressable, ImageBackground, TouchableHighlight, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, createContext } from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import data from '../JSON/data.json';
 
-const MainHub = ({navigation}) =>{
 
+const DropDownData = () => {
+  
+}
+
+
+const DropDownBox = ({ selectedValue, setSelectedValue }) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  return (
+    <View>
+      <DropDownPicker
+        items={[
+          { label: 'All Resources', value: 'all' },
+          { label: 'Option 2', value: 'option2' },
+          { label: 'Option 3', value: 'option3' },
+        ]}
+
+        //Dont touch, it makes it work, idk why
+        open={open}
+        value={value}
+        setOpen={setOpen}
+        setValue={setValue}
+        ////////////////////////////////////////
+
+        defaultNull
+        placeholder="Previous Screenings"
+        defaultValue={'all'}
+        containerStyle={{ height: 40, }}
+        onChangeItem={(item) => {
+          setSelectedValue(item.value);
+          console.log('Selected Value:', item.value); // Add this line for debugging
+        }}
+      />
+    </View>
+  );
+};
+
+const MainHub = ({navigation}) =>{
+  const [selectedValue, setSelectedValue] = useState(null);
 
   const Item = ({title, role, campus, email, description, img,}) => (
     <Pressable onPress={() => navigation.navigate('Resource',
     { the_data: 123, 
       the_title: title, 
-      the_role: role, 
+      the_role: role,
       the_campus: campus,
       the_email: email,
       the_description: description,
     })}>
       <View style={styles.item}>
         <Image 
-          source = {require(`../assets/pictures/Resources/temp.png`)}
-          style = {styles.itemimg}
+              source = {require(`../assets/pictures/Resources/temp.png`)}
+              style = {styles.itemimg}
         />
         <Text style={styles.itemtext}>{title}</Text>
       </View>
@@ -48,14 +87,14 @@ const MainHub = ({navigation}) =>{
       <View style={styles.container}>
         <View style = {styles.notfooter}>
             <View style = {styles.header}> 
-                <Image 
-                    source = {require('../assets/pictures/um-Logo-White.png')}
-                    style = {styles.headerimg}
-                />
+              <DropDownBox
+                selectedValue={selectedValue}
+                setSelectedValue={setSelectedValue}
+              />
             </View>
             <View>
               <Text style = {styles.ltext}>
-                We think these resources might be helpful
+                Complete a screening to get personalized resources
               </Text>
             </View>
             <View style = {styles.hlist}>
@@ -148,17 +187,11 @@ container: {
   notfooter: {
     paddingBottom: 22,
   },
-  headerimg: {
-      left: 60,
-      top: 40,
-  },
   header: {
-      width: '100%',
-      height: 100,
-      transform: [{ scale: 0.55 }],
-      resizeMode: 'cover',
-      bottom: 30,
-      right: 65,
+      width: '75%',
+      alignSelf: 'center',
+      paddingTop: 10,
+      zIndex: 1, // Higher zIndex to bring it forward
   },
   item: {
       backgroundColor: 'transparent',
