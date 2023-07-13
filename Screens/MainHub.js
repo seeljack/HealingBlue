@@ -6,23 +6,67 @@ import AsyncStorage  from '@react-native-async-storage/async-storage';
 import data from '../JSON/data.json';
 
 
-const DropDownData = () => {
-  
-}
+
+const thefetchData = async () => {
+  try {
+    const data = await AsyncStorage.getItem('Screenings');
+    console.log('AsyncStorage data:', data);
+    console.log('\n \n \n \n \n \n \n ');
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+};
+
+
 
 
 const DropDownBox = ({ selectedValue, setSelectedValue }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [screeningData, setScreeningData] = useState(null);
+  
+  // AsyncStorage.clear();
+
+
+
+  useEffect(() => {
+    //This function fetches the data from AsyncStorage
+    const getfetchData = async () => {
+      try {
+        const fetchedData = await AsyncStorage.getItem("Screenings");
+        console.log("SCREENING DATA" + fetchedData);
+        setScreeningData(fetchedData);
+      } catch (error) {
+        console.log('Error fetching data:1', error);
+      }
+    };
+    getfetchData();
+    thefetchData();
+  }, []);
+
+  const DropDownData = () => {
+    if (screeningData) {
+      console.log("First DATA", screeningData);
+      const parsedData = JSON.parse(screeningData);
+      const theParsedData = [parsedData].map((item, index) => ({
+        label: item.campus,
+        value: `${index + 1}_${item.campus}_${item.category}_${item.school}_${item.feeling}_${item.concern}`,
+      }));
+      theParsedData.unshift({
+        label: "All Resources",
+        value: "0_",
+      });
+      console.log("Second Data", theParsedData);
+      return theParsedData;
+    }
+    return [];
+  };
+
   return (
     <View>
+      <Text>{screeningData}</Text>
       <DropDownPicker
-        items={[
-          { label: 'All Resources', value: 'all' },
-          { label: 'Option 2', value: 'option2' },
-          { label: 'Option 3', value: 'option3' },
-        ]}
-
+        items={DropDownData()}
         //Dont touch, it makes it work, idk why
         open={open}
         value={value}
@@ -43,46 +87,46 @@ const DropDownBox = ({ selectedValue, setSelectedValue }) => {
   );
 };
 
-const MainHub = ({navigation}) =>{
-  const [selectedValue, setSelectedValue] = useState(null);
-
-  const Item = ({title, role, campus, email, description, img,}) => (
-    <Pressable onPress={() => navigation.navigate('Resource',
-    { the_data: 123, 
-      the_title: title, 
-      the_role: role,
-      the_campus: campus,
-      the_email: email,
-      the_description: description,
-    })}>
-      <View style={styles.item}>
-        <Image 
-              source = {require(`../assets/pictures/Resources/temp.png`)}
-              style = {styles.itemimg}
-        />
-        <Text style={styles.itemtext}>{title}</Text>
-      </View>
-      </Pressable>
-    );
+const MainHub = ( { navigation, route } ) => {
+  // This is for setting the star equal to its previous color
+    const [selectedValue, setSelectedValue] = useState(null);
 
 
-    const DATA = data.values.slice(1).map(row => {
-      return {
-        id: row[0],
-        title: row[1],
-        img: row[2],
-        campus: row[3],
-        role: row[4],
-        category: row[5],
-        school: row[6],
-        feeling: row[7],
-        concern: row[8],
-        email: row[9],
-        description: row[10],
-      };
-    }); 
+    const Item = ({title, role, campus, email, description, img,}) => (
+      <Pressable onPress={() => navigation.navigate('Resource',
+      { the_data: 123, 
+        the_title: title, 
+        the_role: role,
+        the_campus: campus,
+        the_email: email,
+        the_description: description,
+      })}>
+        <View style={styles.item}>
+          <Image 
+                source = {require(`../assets/pictures/Resources/temp.png`)}
+                style = {styles.itemimg}
+          />
+          <Text style={styles.itemtext}>{title}</Text>
+        </View>
+        </Pressable>
+      );
 
 
+      const DATA = data.values.slice(1).map(row => {
+        return {
+          id: row[0],
+          title: row[1],
+          img: row[2],
+          campus: row[3],
+          role: row[4],
+          category: row[5],
+          school: row[6],
+          feeling: row[7],
+          concern: row[8],
+          email: row[9],
+          description: row[10],
+        };
+      }); 
   return (
       <View style={styles.container}>
         <View style = {styles.notfooter}>
@@ -174,8 +218,9 @@ const MainHub = ({navigation}) =>{
             </View>
           </View>
       </View>
-  );
-}
+    );
+  }
+
 
 
 const styles = StyleSheet.create({

@@ -9,8 +9,10 @@ import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 
 
+
 //This function is for debugging, it shows what is inside the Asyncstorage for favorites
 const thefetchData = async () => {
+  // AsyncStorage.clear();
   try {
     const data = await AsyncStorage.getItem('Screenings');
     console.log('AsyncStorage data:', data);
@@ -22,8 +24,61 @@ const thefetchData = async () => {
 
 
 
-const Hub = ({navigation, route}) =>{
-    let {the_data} = route.params;
+class Hub extends React.Component {
+  componentDidMount() {
+    //code will execute when component is mounted
+    const { navigation, route } = this.props;
+    // Access navigation and route parameters
+    const getfetchData = async () => {
+      const DATA = data.values.slice(1).map(row => {
+        return {
+          id: row[0],
+          title: row[1],
+          img: row[2],
+          campus: row[3],
+          role: row[4],
+          category: row[5],
+          school: row[6],
+          feeling: row[7],
+          concern: row[8],
+          email: row[9],
+          description: row[10],
+        };
+      }); 
+
+
+      const filteredData = DATA.map(item => {
+        return {
+          campus: item.campus,
+          role: item.role,
+          category: item.category,
+          school: item.school,
+          feeling: item.feeling,
+          concern: item.concern,
+        };
+      });
+
+      try {
+          console.log("FILTERED DATA" + JSON.stringify(filteredData[0]));
+          await AsyncStorage.setItem('Screenings', JSON.stringify(filteredData[0]));
+
+      } catch (error) {
+        console.log('Error fetching data:1', error);
+      }
+
+    };
+    getfetchData();
+    thefetchData();
+
+  }
+
+  componentWillUnmount() {
+    // Code to execute when the component is unmounted
+  }
+
+  render() {
+
+    let {the_data} = this.props.route.params;
     let user_campus = the_data[1];
     let user_role = the_data[2];
     let user_category = the_data[3];
@@ -45,7 +100,7 @@ const Hub = ({navigation, route}) =>{
         email: row[9],
         description: row[10],
       };
-    }); 
+    });
 
     // useEffect(() => {
     //   //This function fetches the data from AsyncStorage
@@ -264,6 +319,7 @@ const Hub = ({navigation, route}) =>{
             </View>
         </View>
     );
+  }
 }
 
 
